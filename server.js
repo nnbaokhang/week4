@@ -5,6 +5,7 @@ var passport = require('passport');
 var authController = require('./auth');
 var authJwtController = require('./auth_jwt');
 db = require('./db')(); //global hack
+require('dotenv').load();
 var jwt = require('jsonwebtoken');
 var cors = require('cors');
 
@@ -68,6 +69,7 @@ router.post('/signup', function(req, res) {
             password: req.body.password
         };
         // save the user
+        console.log("Hello world")
         db.save(newUser); //no duplicate checking
         res.json({success: true, msg: 'Successful created new user.'});
     }
@@ -92,6 +94,22 @@ router.post('/signin', function(req, res) {
             }
         };
 });
+router.get('/movies', function(req,res){
+
+    res.status(200).send({status: 200, header:(req.headers), query:req.query, message:'Get movies', unique_key: process.env.UNIQUE_KEY})
+})
+router.post('/movies', function(req,res){
+    res.status(200).send({status: 200, header:(req.headers), query:req.query, message:'movies saved', unique_key: process.env.UNIQUE_KEY})
+})
+router.route('/movies')
+    .put(authJwtController.isAuthenticated, function (req, res) {
+    res.status(200).send({status: 200, header:(req.headers), query:req.query, message:'movies updated', unique_key: process.env.UNIQUE_KEY})
+})
+router.route('/movies')
+    .delete(authController.isAuthenticated, function(req,res){
+    res.status(200).send({status: 200, header:(req.headers), query:req.query, message:'movies deleted', unique_key: process.env.UNIQUE_KEY})
+})
+
 
 app.use('/', router);
 app.listen(process.env.PORT || 8080);

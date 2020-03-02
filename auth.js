@@ -5,6 +5,7 @@ var BasicStrategy = require('passport-http').BasicStrategy;
 passport.use(new BasicStrategy(
     function(username, password, done) {
         //hard coded
+        console.log(username,password)
         var user = { name: "testuser" };
         if (username == user.name && password == "cu")
         {
