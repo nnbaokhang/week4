@@ -81,7 +81,7 @@ router.post('/signin', function(req, res) {
 
         var user = db.findOne(req.body.username);
 
-        if (!user || user.length === 0) {
+        if (!user || user.size() === 0) {
             res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
         }
         else {
