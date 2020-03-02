@@ -78,8 +78,11 @@ router.post('/signup', function(req, res) {
 });
 
 router.post('/signin', function(req, res) {
-        if(req.body.username === ""){
+
+        if(Object.keys(req.body).length === 0){
+            // Your code here if x has some properties
             res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
+            return
         }
         var user = db.findOne(req.body.username);
 
