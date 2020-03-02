@@ -31,7 +31,9 @@ function getJSONObject(req) {
     if (req.headers != null) {
         json.headers = req.headers;
     }
-
+    if (req.query != null) {
+        json.query = req.query;
+    }
     return json;
 }
 
@@ -95,19 +97,22 @@ router.post('/signin', function(req, res) {
         };
 });
 router.get('/movies', function(req,res){
-
-    res.status(200).send({status: 200, header:(req.headers), query:req.query, message:'Get movies', unique_key: process.env.UNIQUE_KEY})
+    let rs = getJSONObject(req)
+    res.status(200).send({status: 200, message:'Get movies', header: rs.headers, query:rs.query, unique_key: rs.key})
 })
 router.post('/movies', function(req,res){
-    res.status(200).send({status: 200, header:(req.headers), query:req.query, message:'movies saved', unique_key: process.env.UNIQUE_KEY})
+    let rs = getJSONObject(req)
+    res.status(200).send({status: 200, message:'movies saved', header:(rs.headers), query:rs.query, unique_key: rs.key})
 })
 router.route('/movies')
     .put(authJwtController.isAuthenticated, function (req, res) {
-    res.status(200).send({status: 200, header:(req.headers), query:req.query, message:'movies updated', unique_key: process.env.UNIQUE_KEY})
+    let rs = getJSONObject(req)
+    res.status(200).send({status: 200, message:'movies updated', header:(rs.headers), query:rs.query, unique_key:rs.key})
 })
 router.route('/movies')
     .delete(authController.isAuthenticated, function(req,res){
-    res.status(200).send({status: 200, header:(req.headers), query:req.query, message:'movies deleted', unique_key: process.env.UNIQUE_KEY})
+    let rs = getJSONObject(req)
+    res.status(200).send({status: 200, message:'movies deleted', header:(rs.headers), query:rs.query , unique_key: rs.key})
 })
 
 
